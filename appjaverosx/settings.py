@@ -13,7 +13,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'mercadodb',                      # Or path to database file if using sqlite3.
+        'NAME': 'mercadodb.sqlite',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -79,6 +79,8 @@ STATICFILES_DIRS = (
     os.path.join(os.path.realpath(__file__), '..','..', 'static').replace('\\','/'),
 )
 print 'ruta para static: ' + os.path.join(os.path.realpath(__file__), '..','..', 'static').replace('\\','/')
+print 'os.path : ' + str(os.path)
+print 'ruta real' + os.path.realpath(__file__)
 
 # List of finder classes that know how to find static files in
 # various locations.

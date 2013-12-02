@@ -1,4 +1,5 @@
 # Django settings for appjaverosx project.
+import os
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -68,11 +69,16 @@ STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 # Additional locations of static files
+#ruta del proyecto PROJECT_PATH
+
+
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    os.path.join(os.path.realpath(__file__), '..', 'static').replace('\\','/'),
 )
+print os.path.join(os.path.realpath(__file__), '..', 'static').replace('\\','/')
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -107,7 +113,6 @@ ROOT_URLCONF = 'appjaverosx.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'appjaverosx.wsgi.application'
 
-import os
 TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
 
 INSTALLED_APPS = (

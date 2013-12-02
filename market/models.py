@@ -17,6 +17,15 @@ class Categoria(models.Model):
     def __unicode__(self):
         return self.nombre
 
+class Producto(models.Model):
+    descripcion = models.CharField(max_length = 250)
+    categoria = models.ForeignKey(Categoria)
+
+    def __unicode__(self):
+        return self.descripcion
+
+
+
 class Catalogo(models.Model):
     stock = models.CharField(max_length=5)
     precio = models.CharField(max_length= 10)
@@ -36,12 +45,7 @@ class Oferta(models.Model):
     def __unicode__(self):
         return 'oferta: '+str(self.fecha_inicio) + self.catalogo.producto.descripcion +  self.catalogo.supermercado.nombre
 
-class Producto(models.Model):
-    descripcion = models.CharField(max_length = 250)
-    categoria = models.ForeignKey(Categoria)
 
-    def __unicode__(self):
-        return self.descripcion
 
 
 class Zona(models.Model):

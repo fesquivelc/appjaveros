@@ -21,22 +21,20 @@ class Catalogo(models.Model):
     stock = models.CharField(max_length=5)
     precio = models.CharField(max_length= 10)
     supermercado = models.ForeignKey(Supermercado)
+    producto = models.ForeignKey(Producto)
 
     def __unicode__(self):
-        return self.stock
+        return self.producto.descripcion + self.supermercado.nombre
 
 class Oferta(models.Model):
-    fecha_inicio = models.DateTimeFields()
-    fecha_fin = models.DateTimeFields()
-    hora_inicio = models.DateTimeFields()
-    hora_fin = models.DateTimeFields()
+    fecha_inicio = models.DateTimeField()
+    fecha_fin = models.DateTimeField()
+    hora_inicio = models.DateTimeField()
+    hora_fin = models.DateTimeField()
     catalogo = models.ForeignKey(Catalogo)
 
     def __unicode__(self):
-        return self.hora_inicio
-        return self.hora_fin
-        return self.fecha_inicio
-        return self.fecha_fin
+        return 'oferta: '+str(self.fecha_inicio) + self.catalogo.producto.descripcion +  self.catalogo.supermercado.nombre
 
 class Producto(models.Model):
     descripcion = models.CharField(max_length = 250)
@@ -76,17 +74,14 @@ class Repartidor(models.Model):
 
 
 class Pedido(models.Model):
-    hora_pedido = models.DateTimeFields()
-    fecha_pedido = models.DateTimeFields()
-    hora_entrega = models.DateTimeFields()
-    fecha_entrega = models.DateTimeFields()
+    hora_pedido = models.DateTimeField()
+    fecha_pedido = models.DateTimeField()
+    hora_entrega = models.DateTimeField()
+    fecha_entrega = models.DateTimeField()
     estado = models.CharField(max_length = 1)
     comentario_cliente = models.TextField()
     repartidor = models.ForeignKey(Repartidor)
     zona = models.ForeignKey(Zona)
 
     def __unicode__(self):
-        return self.fecha_entrega
-        return self.fecha_pedido
-        return self.hora_entrega
-        return self.hora_pedido
+        return self.repartidor.nombre + ' ' + str(self.fecha_pedido) + ' ' + self.hora_fin

@@ -51,85 +51,15 @@
         </div>
     </nav>
 
-
     <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">Panel title</h3>
-        </div>
-        <div class="panel-body">
-            <div class="row">
-                <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
-                        <img src="{{ STATIC_URL }}images/productos/carne-320x210.jpg" height="320" alt="...">
-
-                        <div class="caption">
-                            <h3>Thumbnail label</h3>
-
-                            <p>Esto es un thumbnail</p>
-
-                            <p><a href="#" class="btn btn-primary" role="button">Comprar</a> <a href="#"
-                                                                                                class="btn btn-default"
-                                                                                                role="button">Detalles</a>
-                            </p>
-                        </div>
-                    </div>
+                <div class="panel-heading">
+                    <h3 class="panel-title">{% block tituloPanel %}{% endblock %}</h3>
                 </div>
+                <div class="panel-body">
+    {% block cuerpo %}
 
-                <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
-                        <img src="{{ STATIC_URL }}images/productos/carne-320x210.jpg" height="320" alt="...">
-
-                        <div class="caption">
-                            <h3>Thumbnail label</h3>
-
-                            <p>Esto es un thumbnail Esto es un thumbnail Esto es un thumbnail Esto es un thumbnail Esto
-                                es un
-                                thumbnail Esto es un thumbnail</p>
-
-                            <p><a href="#" class="btn btn-primary" role="button">Comprar</a> <a href="#"
-                                                                                                class="btn btn-default"
-                                                                                                role="button">Detalles</a>
-                            </p>
-                        </div>
-                    </div>
+    {% endblock %}
                 </div>
-
-                <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
-                        <img src="{{ STATIC_URL }}images/productos/carne-320x210.jpg" height="320" alt="...">
-
-                        <div class="caption">
-                            <h3>Thumbnail label</h3>
-
-                            <p>Esto es un thumbnail</p>
-
-                            <p><a href="#" class="btn btn-primary" role="button">Comprar</a> <a href="#"
-                                                                                                class="btn btn-default"
-                                                                                                role="button">Detalles</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
-                        <img src="{{ STATIC_URL }}images/productos/carne-320x210.jpg" height="320" alt="...">
-
-                        <div class="caption">
-                            <h3>Thumbnail label</h3>
-
-                            <p>Esto es un thumbnail</p>
-
-                            <p><a href="#" class="btn btn-primary" role="button">Comprar</a> <a href="#"
-                                                                                                class="btn btn-default"
-                                                                                                role="button">Detalles</a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
     </div>
 
 

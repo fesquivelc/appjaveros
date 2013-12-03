@@ -27,20 +27,24 @@ def login(request):
         ctx = {'form':form,'mensaje':mensaje}
         return render_to_response('login.html',ctx,context_instance=RequestContext(request))
 
-def index(request):
-    return render_to_response('index.html',{},context_instance=RequestContext(request))
-
-def prueba(request):
-    productos = Producto.objects.all()
-    return render_to_response('productos.html',{'productos':productos},context_instance=RequestContext(request))
-
 def catalogo(request,market):
     catalogos = Supermercado.objects.get(id=market).catalogo_set.all()
-    return render_to_response('productos.html',{'catalogos':catalogos},context_instance=RequestContext(request))
+    return render_to_response('catalogos.html',{'catalogos':catalogos},context_instance=RequestContext(request))
+
+def catalogo_categoria(request,market,cat):
+    if int(cat) == 0:
+        catalogos = Supermercado.objects.get(id=market).catalogo_set.all()
+    else:
+        categoria = Categoria.objects.get(int(cat))
+        productos = categoria.producto_set.filter
+
+    categorias = Categoria.objects.all()
+
+    return render_to_response('catalogos.html',{'catalogos':catalogos,'categorias':categorias},context_instance=RequestContext(request))
+
 
 def supermercados(request):
     markets = Supermercado.objects.all()
     return render_to_response('supermercados.html',{'markets':markets},context_instance=RequestContext(request))
-#def cerrar_sesion(request):
 
 

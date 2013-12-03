@@ -3,7 +3,7 @@
   <component name="DataSourceManagerImpl" format="xml" hash="1545636623">
     <data-source source="LOCAL" name="Django default" uuid="9c3615cd-baa1-41d7-ae59-f984ccd7b744">
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/mercadodb</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/mercadodb.sqlite</jdbc-url>
       <libraries>
         <library>
           <url>file://$USER_HOME$/.PyCharm30/config/jdbc-drivers/mysql-connector-license.txt</url>

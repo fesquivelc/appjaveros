@@ -12,8 +12,8 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-    url(r'^$','market.views.index',name='index'),
-    url(r'^prueba/$','market.views.prueba',name='prueba'),
+    url(r'^$','market.views.login',name='login'),
+    url(r'^catalogo/$','market.views.catalogo',name='catalogo'),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

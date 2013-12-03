@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{{ STATIC_URL }}css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/mio.css" rel="stylesheet">
+    {% block aqui_css %}
+
+    {% endblock %}
+</head>
+<body>
+<div class="container">
+    <div class="page-header">
+        <h1>{% block cabecera %}{% endblock %}
+            <small>{% block subcabecera %}{% endblock %}</small>
+        </h1>
+    </div>
+    {% block bar %}
+
+    {% endblock %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">{% block panel %}{% endblock %}</h3>
+        </div>
+        <div class="panel-body">
+            {% block cuerpo %}
+
+            {% endblock %}
+        </div>
+    </div>
+</div>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://code.jquery.com/jquery.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+{% block aqui_js %}
+{% endblock %}
+</body>
+</html>

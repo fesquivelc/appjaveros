@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block aqui_css %}
+    <link href="{{ STATIC_URL }}css/bootstrap-combobox.css" rel="stylesheet">
+{% endblock %}
 {% block bar %}
     <nav class="navbar navbar-default" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -34,5 +37,21 @@
             </button>
             <a class="navbar-brand" href="#">Brand</a>
         </div>
+        <select class="combobox">
+            <option></option>
+            <option value="PA">Pennsylvania</option>
+            <option value="CT">Connecticut</option>
+            <option value="NY">New York</option>
+            <option value="MD">Maryland</option>
+            <option value="VA">Virginia</option>
+        </select>
     </nav>
+{% endblock %}
+{% block aqui_js %}
+    <script src="{{ STATIC_URL }}js/bootstrap-combobox.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.combobox').combobox();
+        });
+    </script>
 {% endblock %}

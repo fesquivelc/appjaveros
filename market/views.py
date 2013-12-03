@@ -8,8 +8,9 @@ from django.contrib.auth import login as auth_login
 
 def login(request):
     mensaje = ""
+    rutaCorrecto = '/supermercados'
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/catalogo')
+        return HttpResponseRedirect(rutaCorrecto)
     else:
         if request.method == "POST":
             form = LoginForm(request.POST)
@@ -19,7 +20,7 @@ def login(request):
                 user = authenticate(username=usuario,password=contrasena)
                 if user is not None:
                     auth_login(request,user)
-                    return HttpResponseRedirect('/catalogo')
+                    return HttpResponseRedirect(rutaCorrecto)
                 else:
                     mensaje = "usuario y/o password incorrecto"
         form = LoginForm()
@@ -33,7 +34,13 @@ def prueba(request):
     productos = Producto.objects.all()
     return render_to_response('productos.html',{'productos':productos},context_instance=RequestContext(request))
 
-def catalogo(request):
-    catalogos = Catalogo.objects.all()
+def catalogo(request,market):
+    catalogos = Supermercado.objects.get(id=market).catalogo_set.all()
     return render_to_response('productos.html',{'catalogos':catalogos},context_instance=RequestContext(request))
+
+def supermercados(request):
+    markets = Supermercado.objects.all()
+    return render_to_response('supermercados.html',{'markets':markets},context_instance=RequestContext(request))
+#def cerrar_sesion(request):
+
 

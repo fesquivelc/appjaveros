@@ -7,6 +7,7 @@ class Supermercado(models.Model):
     direccion = models.CharField(max_length=250)
     telefono = models.CharField(max_length=10)
     web = models.CharField(max_length=200,null=True)
+    logo = models.FileField(upload_to='static/images/supermercados')
 
     def __unicode__(self):
         return self.nombre

@@ -34,43 +34,24 @@ def login(request):
 
 
 def catalogos_view(request,market,cat):
-    mensaje=""
-    supermercado = Supermercado.objects.get(id=market)
-    mnuCategorias = supermercado.catalogo_set.all()
-    ctx = {}
+    supermercado = Supermercado.objects.get(id=int(market))
+    mnuCategorias = Categoria.objects.all()
+    nombreProducto = ''
     if request.method == "POST":
         form = BusquedaProductoForm(request.POST)
         if form.is_valid():
+            print 'Es valido'
             nombreProducto = form.cleaned_data['nombreProducto']
-            mensaje = nombreProducto
-            if cat != 0:
-                catalogos = Catalogo.objects.filter(supermercado=supermercado).filter(categoria=cat).filter(producto__in=Producto.objects.filter(nombre__contains=nombreProducto))
-            else:
-                catalogos = Catalogo.objects.filter(supermercado=supermercado).filter(producto__in=Producto.objects.filter(nombre__contains=nombreProducto))
-            form = BusquedaProductoForm()
-            ctx = {'mnuCategorias':mnuCategorias,'catalogos':catalogos,'mensaje':mensaje,'form':form}
     else:
         form = BusquedaProductoForm()
-        ctx = {'mnuCategorias':mnuCategorias,'mensaje':mensaje,'form':form}
-    print form
+    if int(cat):
+         catalogos = Catalogo.objects.filter(supermercado=supermercado).filter(producto__in=Producto.objects.filter(nombre__contains=nombreProducto).filter(categoria=Categoria.objects.get(id=int(cat))))
+    else:
+        catalogos = Catalogo.objects.filter(supermercado=supermercado).filter(producto__in=Producto.objects.filter(nombre__contains=nombreProducto))
+    ctx = {'mnuCategorias':mnuCategorias,'catalogos':catalogos,'form':form,'market':market}
     return render_to_response('catalogos.html',ctx,context_instance=RequestContext(request))
 
-#def catalogo_categoria(request,market,cat):
-#    mensaje = ""
-#    if request.method == "POST":
-#        mensaje = "ay papi"
-#    #if int(cat) == 0:
-#    catalogos = Supermercado.objects.get(id=market).catalogo_set.all()
-#    #else:
-#    #    categoria = Categoria.objects.get(int(cat))
-#    #    productos = categoria.producto_set.filter
-#
-#    categorias = Categoria.objects.all()
-#
-#    return render_to_response('catalogos.html',{'catalogos':catalogos,'categorias':categorias,'mensaje':mensaje},context_instance=RequestContext(request))
-
-
-def supermercados(request):
+def supermercados_view(request):
     markets = Supermercado.objects.all()
     return render_to_response('supermercados.html',{'markets':markets},context_instance=RequestContext(request))
 

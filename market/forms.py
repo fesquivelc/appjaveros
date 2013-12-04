@@ -6,4 +6,4 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class' : 'form-control','placeholder':'*******'},render_value=False),required=True)
 
 class BusquedaProductoForm(forms.Form):
-    nombreProducto = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del producto'}),required=True)
+    nombreProducto = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Nombre del producto'}))

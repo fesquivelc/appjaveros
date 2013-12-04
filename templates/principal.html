@@ -6,7 +6,7 @@
     <nav class="navbar navbar-default" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
 
-        <form class="navbar-form navbar-left" role="search" method="POST" action="">
+        <form id="formulario" class="navbar-form navbar-left" role="search" method="POST" action="">
             {% csrf_token %}
             <div class="form-group">
                 {% block busqueda %}

@@ -13,8 +13,8 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^$','market.views.login',name='login'),
-    url(r'^catalogo/(\d{1,2})/(\d+)$','market.views.catalogos_view',name='catalogos_view'),
-    url(r'^supermercados/$','market.views.supermercados',name='supermercados'),
+    url(r'^catalogo/(\d{1,2})/(\d+)/$','market.views.catalogos_view',name='catalogos_view'),
+    url(r'^supermercados/$','market.views.supermercados_view',name='supermercados'),
     url(r'^cerrar/$','market.views.cerrar_sesion',name='cerrar_sesion'),
 
     # Uncomment the next line to enable the admin:

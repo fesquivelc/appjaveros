@@ -24,22 +24,24 @@ class Categoria(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=150)
     descripcion = models.CharField(max_length = 250,null=True)
-    #categoria = models.ForeignKey(Categoria)
+    categoria = models.ForeignKey(Categoria)
 
     def __unicode__(self):
         return self.descripcion
 
+    class Meta:
+        ordering=('nombre','descripcion',)
+
 
 class Catalogo(models.Model):
-    stock = models.CharField(max_length=5)
+    stock = models.IntegerField(max_length=5,default='0')
     precio = models.DecimalField(max_digits=8,decimal_places=2,default='0.00')
     supermercado = models.ForeignKey(Supermercado)
     producto = models.ForeignKey(Producto)
-    categoria = models.ForeignKey(Categoria)
     imagen = models.ImageField(upload_to='static/images/productos')
 
     def __unicode__(self):
-        return self.producto.descripcion + self.supermercado.nombre
+        return self.producto.descripcion + ' ' + self.supermercado.nombre
 
 class Oferta(models.Model):
     fecha_inicio = models.DateTimeField()

@@ -12,9 +12,12 @@
     {{ form.nombreProducto }}
 {% endblock %}
 {% block categoria %}
-    <li><a href="0">Todas</a></li>
+
     {% for cat in mnuCategorias %}
-        <li><a href="{{ cat.id }}">{{ cat.nombre }}</a></li>
+        {% if forloop.first %}
+            <li><a href="/catalogo/{{ market }}/0/">Todas</a></li>
+        {% endif %}
+        <li><a href="/catalogo/{{ market }}/{{ cat.id }}/">{{ cat.nombre }}</a></li>
     {% endfor %}
 {% endblock %}
 {% block cuerpo %}

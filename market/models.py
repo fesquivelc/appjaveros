@@ -24,11 +24,10 @@ class Categoria(models.Model):
 class Producto(models.Model):
     nombre = models.CharField(max_length=150)
     descripcion = models.CharField(max_length = 250,null=True)
-    categoria = models.ForeignKey(Categoria)
+    #categoria = models.ForeignKey(Categoria)
 
     def __unicode__(self):
         return self.descripcion
-
 
 
 class Catalogo(models.Model):
@@ -36,6 +35,7 @@ class Catalogo(models.Model):
     precio = models.DecimalField(max_digits=8,decimal_places=2,default='0.00')
     supermercado = models.ForeignKey(Supermercado)
     producto = models.ForeignKey(Producto)
+    categoria = models.ForeignKey(Categoria)
     imagen = models.ImageField(upload_to='static/images/productos')
 
     def __unicode__(self):
@@ -99,3 +99,11 @@ class Pedido(models.Model):
 
     def __unicode__(self):
         return self.repartidor.nombre + ' ' + str(self.fecha_pedido) + ' ' + self.hora_fin
+
+class DetallePedido(models.Model):
+    pedido = models.ForeignKey(Pedido)
+    catalogo = models.ForeignKey(Catalogo)
+    cantidad = models.IntegerField()
+
+    def __unicode__(self):
+        return self.pedido + ' ' + self.catalogo.producto.nombre

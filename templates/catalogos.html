@@ -2,12 +2,18 @@
 {% block cabecera %}
     Búsqueda de productos
 {% endblock %}
+{% block subcabecera %}
+    {{ mensaje }}
+{% endblock %}
 {% block panel %}
     Productos disponibles
 {% endblock %}
+{% block busqueda %}
+    {{ form.nombreProducto }}
+{% endblock %}
 {% block categoria %}
     <li><a href="0">Todas</a></li>
-    {% for cat in categorias %}
+    {% for cat in mnuCategorias %}
         <li><a href="{{ cat.id }}">{{ cat.nombre }}</a></li>
     {% endfor %}
 {% endblock %}

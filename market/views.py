@@ -5,7 +5,7 @@ from market.models import *
 from market.forms import *
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
-from django.db.models import Q
+from cart import Cart
 
 
 def login(request):
@@ -25,7 +25,7 @@ def login(request):
                         auth_login(request,user)
 
                         #variable de sesion que contiene el carrito
-                        request.session['carrito_compra'] = {}
+                        request.session['carrito_compra'] = []
                         return HttpResponseRedirect(rutaCorrecto)
                     else:
                         mensaje = "Cuenta inactiva"
@@ -62,22 +62,45 @@ def cerrar_sesion(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+def add_to_cart(request, catalogo_id, cantidad):
+    catalogo = Catalogo.objects.get(id = catalogo_id)
+    cart = Cart(request)
+    cart.add(catalogo,catalogo.precio,1)
+    print len(dict(cart=Cart(request)))
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-def add_cart(request, id_catalogo):
-    detalle = DetallePedido()
-    catalogo = Catalogo.objects.get(id=id_catalogo)
-
-    detalle.cantidad = 1
-    detalle.catalogo = catalogo
-
-    request.session['carrito_compra'] = detalle
-    #carrito = request.session['carrito_compra']
-    #if detalle not in carrito:
-    #    carrito.append(detalle)
-    return HttpResponseRedirect('../../')
+def remove_from_cart(request, catalogo_id):
+    catalogo = Catalogo.objects.get(id = catalogo_id)
+    cart = Cart(request)
+    cart.remove(catalogo)
 
 def get_cart(request):
-    productos = request.session['carrito_compra']
-    ctx = {'productos':productos}
+    lista = []
+    shop =  dict(cart=Cart(request))
 
-    return render_to_response('carrito.html',ctx,context_instance=RequestContext(request))
+    print shop.get('cart')
+
+    for i in shop.get('cart'):
+        print i.product
+
+    return render_to_response('carrito.html', dict(cart=Cart(request)),context_instance=RequestContext(request))
+
+#def add_cart(request, id_catalogo):
+#    catalogo = Catalogo.objects.get(id=id_catalogo)
+#    if not 'carrito_compra' in request.session or not request.session['carrito_compra']:
+#        request.session['carrito_compra'] = [catalogo]
+#    else:
+#        saved_list = request.session['carrito_compra']
+#        saved_list.append(catalogo)
+#        request.session['carrito_compra'] = saved_list
+#    #if detalle not in carrito:
+#    #    carrito.append(detalle)
+#    #request.session['carrito_compra']))
+#    #print request.session['carrito_compra']
+#    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+#
+#def get_cart(request):
+#    productos = request.session['carrito_compra']
+#    ctx = {'productos':productos}
+
+#    return render_to_response('carrito.html',ctx,context_instance=RequestContext(request))

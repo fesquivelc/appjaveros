@@ -37,6 +37,7 @@ class Producto(models.Model):
         return self.descripcion
 
     class Meta:
+        verbose_name_plural = 'Productos'
         ordering=('nombre','descripcion',)
 
 
@@ -81,6 +82,7 @@ class Direccion(models.Model):
         return self.numero
 
     class Meta:
+        verbose_name_plural = 'Direcciones'
         ordering = ('nombre',)
 
 class Repartidor(models.Model):
@@ -92,6 +94,7 @@ class Repartidor(models.Model):
     def __unicode__(self):
         return self.nombre
     class Meta:
+        verbose_name_plural = 'Repartidores'
         ordering = ('apellidos',)
 
 

@@ -5,21 +5,15 @@
 {% block bar %}
     <nav class="navbar navbar-default" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
+        {% block busqueda %}
 
-        <form id="formulario" class="navbar-form navbar-left" role="search" method="POST" action="">
-            {% csrf_token %}
-            <div class="form-group">
-                {% block busqueda %}
-
-                {% endblock %}
-                {# <input type="text" class="form-control" placeholder="Nombre del producto"> #}
-            </div>
-            <button type="submit" class="btn btn-default">Buscar <span class=" .glyphicon .glyphicon-search"></span>
-            </button>
-        </form>
+        {% endblock %}
 
         <ul class="nav navbar-nav navbar-right">
-            <li><a href="/cerrar/">Cerrar sesión</a></li>
+            <li><a href="/cerrar/">Carrito de compras <span class="glyphicon glyphicon-shopping-cart"></span></a></li>
+            <li><a href="/cerrar/">Ver pedidos <span class="glyphicon glyphicon-plane"></span></a></li>
+            <li><a href="/cerrar/">Contáctenos <span class="glyphicon glyphicon-phone-alt"></span></a></li>
+            <li><a href="/cerrar/">Cerrar sesión <span class="glyphicon glyphicon-log-out"></span></a></li>
         </ul>
 
     </nav>

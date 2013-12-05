@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     url(r'^catalogo/(\d{1,2})/(\d+)/$','market.views.catalogos_view',name='catalogos_view'),
     url(r'^supermercados/$','market.views.supermercados_view',name='supermercados'),
     url(r'^cerrar/$','market.views.cerrar_sesion',name='cerrar_sesion'),
+    url(r'add_cart/(\d+)/$','market.views.add_cart',name='agregar_carrito'),
 
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),

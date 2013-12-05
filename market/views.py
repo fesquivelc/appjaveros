@@ -23,6 +23,9 @@ def login(request):
                 if user is not None:
                     if user.is_active:
                         auth_login(request,user)
+
+                        #variable de sesion que contiene el carrito
+                        request.session['carrito_compra'] = {}
                         return HttpResponseRedirect(rutaCorrecto)
                     else:
                         mensaje = "Cuenta inactiva"
@@ -48,7 +51,7 @@ def catalogos_view(request,market,cat):
          catalogos = Catalogo.objects.filter(supermercado=supermercado).filter(producto__in=Producto.objects.filter(nombre__contains=nombreProducto).filter(categoria=Categoria.objects.get(id=int(cat))))
     else:
         catalogos = Catalogo.objects.filter(supermercado=supermercado).filter(producto__in=Producto.objects.filter(nombre__contains=nombreProducto))
-    ctx = {'mnuCategorias':mnuCategorias,'catalogos':catalogos,'form':form,'market':market}
+    ctx = {'mnuCategorias':mnuCategorias,'catalogos':catalogos,'form':form,'supermercado':supermercado,'catActual':int(cat)}
     return render_to_response('catalogos.html',ctx,context_instance=RequestContext(request))
 
 def supermercados_view(request):
@@ -58,3 +61,23 @@ def supermercados_view(request):
 def cerrar_sesion(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+
+def add_cart(request, id_catalogo):
+    detalle = DetallePedido()
+    catalogo = Catalogo.objects.get(id=id_catalogo)
+
+    detalle.cantidad = 1
+    detalle.catalogo = catalogo
+
+    request.session['carrito_compra'] = detalle
+    #carrito = request.session['carrito_compra']
+    #if detalle not in carrito:
+    #    carrito.append(detalle)
+    return HttpResponseRedirect('../../')
+
+def get_cart(request):
+    productos = request.session['carrito_compra']
+    ctx = {'productos':productos}
+
+    return render_to_response('carrito.html',ctx,context_instance=RequestContext(request))

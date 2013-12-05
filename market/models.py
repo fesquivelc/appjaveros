@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User # LOS USUARIOS SON MANEJADOS POR DJANGO AUTOMATICAMENTE =)
 from django.db import models
 
+
 # Create your models here.
 class Supermercado(models.Model):
     nombre = models.CharField(max_length=150)
@@ -25,6 +26,12 @@ class Producto(models.Model):
     nombre = models.CharField(max_length=150)
     descripcion = models.CharField(max_length = 250,null=True)
     categoria = models.ForeignKey(Categoria)
+    unidad = models.CharField(max_length=10,choices=(
+                                                        ('Kg','Kilogramos'),
+                                                        ('g','gramos'),
+                                                        ('uni','unidades'),
+                                                        ('caj','cajas')
+                                                    ))
 
     def __unicode__(self):
         return self.descripcion

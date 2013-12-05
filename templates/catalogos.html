@@ -3,21 +3,31 @@
     Búsqueda de productos
 {% endblock %}
 {% block subcabecera %}
-    {{ mensaje }}
+    {{ supermercado.nombre }}
 {% endblock %}
 {% block panel %}
     Productos disponibles
 {% endblock %}
 {% block busqueda %}
-    {{ form.nombreProducto }}
+    <form id="formulario" class="navbar-form navbar-left" role="search" method="POST" action="">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.nombreProducto }}
+        </div>
+        <button type="submit" class="btn btn-default">Buscar <span class=" glyphicon glyphicon-search"></span>
+        </button>
+    </form>
+
 {% endblock %}
 {% block categoria %}
 
     {% for cat in mnuCategorias %}
         {% if forloop.first %}
-            <li><a href="/catalogo/{{ market }}/0/">Todas</a></li>
+            <li {% ifequal catActual 0 %} class="active" {% endifequal %}><a href="/catalogo/{{ supermercado.id }}/0/">Todas</a>
+            </li>
         {% endif %}
-        <li><a href="/catalogo/{{ market }}/{{ cat.id }}/">{{ cat.nombre }}</a></li>
+        <li {% ifequal catActual cat.id %} class="active"{% endifequal %}><a
+                href="/catalogo/{{ supermercado.id }}/{{ cat.id }}/">{{ cat.nombre }}</a></li>
     {% endfor %}
 {% endblock %}
 {% block cuerpo %}
@@ -25,18 +35,20 @@
         {% for catalogo in catalogos %}
             <div class="col-sm-6 col-md-4">
                 <div class="thumbnail">
-                    <img src="/{{ catalogo.imagen }}" alt="...">
+                    <img src="/{{ catalogo.imagen }}" style="max-height: 200px">
 
                     <div class="caption">
                         <h3>{{ catalogo.producto.nombre }}</h3>
 
-                        <h4>{{ catalogo.supermercado.nombre }}</h4>
+                        <h4>{{ catalogo.producto.descripcion }}</h4>
 
-                        <p>{{ catalogo.producto.descripcion }}</p>
+                        <h3><span
+                                class="label label-info">S/.{{ catalogo.precio }}x{{ catalogo.producto.unidad }}</span>
+                        </h3>
 
                         <p>
-                            <a href="#" class="btn btn-primary" role="button" style="width: 100%">Añadir al carrito</a>
-{#                            <a href="#" class="btn btn-default" role="button">Detalles</a>#}
+                            <a href="add_cart/{{ catalogo.id }}" class="btn btn-primary" role="button" style="width: 100%">Añadir al carrito</a>
+                            {#                            <a href="#" class="btn btn-default" role="button">Detalles</a>#}
                         </p>
                     </div>
                 </div>

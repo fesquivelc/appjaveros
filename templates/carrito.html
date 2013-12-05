@@ -1,0 +1,10 @@
+{% extends 'principal.html'%}
+{% block cabecera %}
+    Carrito de compras
+{% endblock %}
+{% block cuerpo %}
+
+{% for producto in productos %}
+    <p>{{ producto.producto.id }}</p>
+{% endfor %}
+{% endblock %}

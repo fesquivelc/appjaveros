@@ -1,3 +1,5 @@
+# coding=utf-8
+from django.core.mail.message import EmailMultiAlternatives
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -6,6 +8,35 @@ from market.forms import *
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from cart import Cart
+
+
+def contacto_view(request):
+    info_enviado = False
+    email = ''
+    titulo = ''
+    contenido = ''
+
+    if request.method == 'POST':
+        formulario = ContactoForm(request.POST)
+        if formulario.is_valid():
+            info_enviado = True
+            email = formulario.cleaned_data['email']
+            titulo = formulario.cleaned_data['titulo']
+            contenido = formulario.cleaned_data['contenido']
+
+            #configuracion para enviar el mensaje a GMAIL
+            html_content = 'Informacion recibida <br/> <br/> <h3> ******* Mensaje de %s ******* </h3> <br/> <br/>' \
+                           '<h4>Titulo: %s </h4>' \
+                           '<p>%s</p>' %(email,titulo,contenido)
+
+            to = 'fesquivelc@gmail.com'
+            msje = EmailMultiAlternatives('Correo de contacto',html_content,'from@server.com',[to])
+            msje.attach_alternative(html_content,'text/html')
+            msje.send()
+    else:
+        formulario = ContactoForm()
+    ctx = {'enviado': info_enviado, 'email':email,'titulo':titulo,'contenido':contenido,'form':formulario}
+    return render_to_response('contacto.html',ctx,context_instance=RequestContext(request))
 
 
 def login(request):
@@ -34,6 +65,7 @@ def login(request):
         form = LoginForm()
         ctx = {'form':form,'mensaje':mensaje}
         return render_to_response('login.html',ctx,context_instance=RequestContext(request))
+
 
 
 def catalogos_view(request,market,cat):
@@ -84,23 +116,3 @@ def get_cart(request):
         print i.product
 
     return render_to_response('carrito.html', dict(cart=Cart(request)),context_instance=RequestContext(request))
-
-#def add_cart(request, id_catalogo):
-#    catalogo = Catalogo.objects.get(id=id_catalogo)
-#    if not 'carrito_compra' in request.session or not request.session['carrito_compra']:
-#        request.session['carrito_compra'] = [catalogo]
-#    else:
-#        saved_list = request.session['carrito_compra']
-#        saved_list.append(catalogo)
-#        request.session['carrito_compra'] = saved_list
-#    #if detalle not in carrito:
-#    #    carrito.append(detalle)
-#    #request.session['carrito_compra']))
-#    #print request.session['carrito_compra']
-#    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-#
-#def get_cart(request):
-#    productos = request.session['carrito_compra']
-#    ctx = {'productos':productos}
-
-#    return render_to_response('carrito.html',ctx,context_instance=RequestContext(request))

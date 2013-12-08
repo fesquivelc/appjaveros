@@ -1,0 +1,40 @@
+{% extends 'principal.html' %}
+{% block aqui_css %}
+    <link href="{{ STATIC_URL }}css/signin.css" rel="stylesheet">
+{% endblock %}
+{% block cabecera %}
+    CONTÁCTANOS
+{% endblock %}
+{% block panel %}
+    {% if enviado %}
+        Gracias nos contactaremos con usted
+    {% else %}
+        Llene los datos a enviar
+    {% endif %}
+{% endblock %}
+{% block navbar %}
+    <li><a href="/supermercados/">Comprar <span class="glyphicon glyphicon-hand-up"></span></a></li>
+{% endblock %}
+{% block cuerpo %}
+    {% if enviado %}
+        <div class="panel panel-info" style="max-width: 500px;margin: 0 auto;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Título: <strong> {{ titulo }}</strong></h3>
+            </div>
+            <div class="panel-body">
+                <h4>De: {{ email }}</h4>
+                <p>Contenido:</p>
+                <p>{{ contenido }}</p>
+            </div>
+        </div>
+    {% else %}
+        <form class="form-signin" method="POST" action=".">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Enviar <span
+                    class="glyphicon glyphicon-send"></span></button>
+        </form>
+    {% endif %}
+
+{% endblock %}
+

@@ -1,3 +1,4 @@
+# coding=utf-8
 # Django settings for appjaverosx project.
 import os
 
@@ -163,3 +164,10 @@ LOGGING = {
         },
     }
 }
+
+#CONFIGURACIÓN DE GMAIL PARA EL CORREO DE CONTACTO
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'project.pythonisa@gmail.com'
+EMAIL_HOST_PASSWORD = 'j4v3r0x3v3r'
+EMAIL_USE_TLS = True

@@ -5,9 +5,9 @@
 }*/
 
 .form-signin {
-  max-width: 350px;
+  max-width: 500px;
   padding: 10px;
-  margin: 1em auto 15em auto;
+  margin: 1em auto 5em auto;
 }
 .form-signin .form-signin-heading,
 .form-signin .checkbox {

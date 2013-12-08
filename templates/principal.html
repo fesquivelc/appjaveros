@@ -10,10 +10,14 @@
         {% endblock %}
 
         <ul class="nav navbar-nav navbar-right">
+            {% block navbar %}
+
+            {% endblock %}
             <li><a href="view_cart/">Carrito de compras <span class="glyphicon glyphicon-shopping-cart"></span></a></li>
-            <li><a href="/cerrar/">Ver pedidos <span class="glyphicon glyphicon-plane"></span></a></li>
-            <li><a href="/cerrar/">Contáctenos <span class="glyphicon glyphicon-phone-alt"></span></a></li>
+            <li><a href="/pedidos">Ver pedidos <span class="glyphicon glyphicon-plane"></span></a></li>
+            <li><a href="/contacto/">Contáctenos <span class="glyphicon glyphicon-phone-alt"></span></a></li>
             <li><a href="/cerrar/">Cerrar sesión <span class="glyphicon glyphicon-log-out"></span></a></li>
+
         </ul>
 
     </nav>

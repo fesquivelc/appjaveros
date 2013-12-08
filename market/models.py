@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import User # LOS USUARIOS SON MANEJADOS POR DJANGO AUTOMATICAMENTE =)
 from django.db import models
 
@@ -77,7 +78,7 @@ class Direccion(models.Model):
     numero = models.IntegerField()
     telefono = models.CharField(max_length=10)
     zona = models.ForeignKey(Zona)
-    usuario = models.ManyToManyField(User)
+    usuario = models.ManyToManyField(settings.AUTH_USER_MODEL)
     def __unicode__(self):
         return self.numero
 

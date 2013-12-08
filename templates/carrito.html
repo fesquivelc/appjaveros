@@ -24,11 +24,18 @@
             <tr>
                 <td><img src="/{{ producto.product.imagen }}" alt="..." class="img-rounded" style="height: 64px"> <h4>{{ producto.product.producto.nombre }}</h4></td>
                 <td>{{ producto.product.supermercado.nombre }}</td>
-                <td><input id="cant[{{ producto.product.id }}]" type="text" value="1" name="cantidad" /></td>
-                <td><label id=precio name=precio for="cant[{{ producto.product.id }}]">{{ producto.product.precio }}</label></td>
+                <td><input id="cant-{{ producto.product.id }}" type="text" name="cantidad" /></td>
+                <td><label id="precio" name="precio" for="cant-{{ producto.product.id }}">{{ producto.product.precio }}</label></td>
                 <td><a href="{{ forloop.counter }}"><span class="glyphicon glyphicon-trash"></span></a></td>
             </tr>
         {% endfor %}
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td><label for=""></label></td>
+        </tr>
     </table>
 
     </form>

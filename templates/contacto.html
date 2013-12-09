@@ -13,7 +13,7 @@
     {% endif %}
 {% endblock %}
 {% block navbar %}
-    <li><a href="/supermercados/">Comprar <span class="glyphicon glyphicon-hand-up"></span></a></li>
+    <li><a href="{% url 'supermercados' %}">Comprar <span class="glyphicon glyphicon-hand-up"></span></a></li>
 {% endblock %}
 {% block cuerpo %}
     {% if enviado %}

@@ -131,6 +131,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'market',
     'cart',
+    'dajaxice',
+    'dajax',
 
 )
 

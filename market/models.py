@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import User # LOS USUARIOS SON MANEJADOS POR DJANGO AUTOMATICAMENTE =)
 from django.db import models
-
+import datetime
 
 # Create your models here.
 class Supermercado(models.Model):
@@ -15,6 +15,8 @@ class Supermercado(models.Model):
         return self.nombre
     class Meta:
         ordering = ('nombre',)
+
+
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100)
@@ -54,10 +56,14 @@ class Catalogo(models.Model):
 
 class Oferta(models.Model):
     fecha_inicio = models.DateTimeField()
-    fecha_fin = models.DateTimeField()
+    fecha_fin = models.DateTimeField(null=True)
     hora_inicio = models.DateTimeField()
-    hora_fin = models.DateTimeField()
+    hora_fin = models.DateTimeField(null=True)
     catalogo = models.ForeignKey(Catalogo)
+    estado = models.CharField(max_length=1,choices=(
+                                                    ('A','Activo'),
+                                                    ('N','No activo'),
+                                                ))
 
     def __unicode__(self):
         return 'oferta: '+str(self.fecha_inicio) + self.catalogo.producto.descripcion +  self.catalogo.supermercado.nombre
@@ -68,16 +74,29 @@ class Zona(models.Model):
     recargo = models.IntegerField()
 
     def __unicode__(self):
-        return self.nombre + ' ' +str(self.recargo)
+        return 'nombre: %s - recargo: %s' % (self.nombre,self.recargo)
+
+    class Meta:
+        ordering = ('recargo','nombre',)
+
+class Urbanizacion(models.Model):
+    nombre = models.CharField(max_length=150)
+    zona = models.ForeignKey(Zona)
+
+    def __unicode__(self):
+        return 'Zona: %s - Nombre: %s' % (self.nombre,self.zona)
+
+    class Meta:
+        verbose_name_plural = 'Urbanizaciones'
+        ordering = ('zona','nombre',)
 
 
 class Direccion(models.Model):
     tipo = models.CharField(max_length = 2)
-    urbanizacion = models.CharField(max_length = 150)
     nombre = models.CharField(max_length = 250)
     numero = models.IntegerField()
     telefono = models.CharField(max_length=10)
-    zona = models.ForeignKey(Zona)
+    urbanizacion = models.ForeignKey(Urbanizacion)
     usuario = models.ManyToManyField(settings.AUTH_USER_MODEL)
     def __unicode__(self):
         return self.numero
@@ -90,7 +109,7 @@ class Repartidor(models.Model):
     dni = models.CharField(max_length = 8,primary_key=True)
     apellidos = models.CharField(max_length = 100)
     nombre = models.CharField(max_length = 100)
-    disponibilidad = models.CharField(max_length = 1)
+    disponibilidad = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.nombre
@@ -100,18 +119,24 @@ class Repartidor(models.Model):
 
 
 class Pedido(models.Model):
-    hora_pedido = models.DateTimeField()
-    fecha_pedido = models.DateTimeField()
-    hora_entrega = models.DateTimeField()
-    fecha_entrega = models.DateTimeField()
-    estado = models.CharField(max_length = 1)
-    comentario_cliente = models.TextField()
+    hora_pedido = models.TimeField(default=datetime.datetime.now())
+    fecha_pedido = models.DateField(default=datetime.datetime.now())
+    hora_entrega = models.TimeField(null=True)
+    fecha_entrega = models.DateField(null=True)
+    estado = models.CharField(max_length = 1,choices=(
+                                                        ('S','Sin salir'),
+                                                        ('A','Atendiendo'),
+                                                        ('E','Entregado'),
+                                                    ))
+    direccion = models.ForeignKey(Direccion)
+    comentario_cliente = models.TextField(null=True)
+    confirmacion_cliente = models.BooleanField(null=True,default=False)
     repartidor = models.ForeignKey(Repartidor)
     zona = models.ForeignKey(Zona)
     usuario = models.ForeignKey(User)
 
     def __unicode__(self):
-        return self.repartidor.nombre + ' ' + str(self.fecha_pedido) + ' ' + self.hora_fin
+        return 'repartidor: %s - fecha de pedido: %s - hora de pedido: %s' % (self.repartidor.nombre,self.fecha_pedido,self.hora_pedido)
 
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido)
@@ -119,4 +144,4 @@ class DetallePedido(models.Model):
     cantidad = models.IntegerField()
 
     def __unicode__(self):
-        return self.pedido + ' ' + self.catalogo.producto.nombre
+        return 'pedido: %s - producto: %s' % (self.pedido.id,self.catalogo.producto.nombre)

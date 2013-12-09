@@ -23,11 +23,11 @@
 
     {% for cat in mnuCategorias %}
         {% if forloop.first %}
-            <li {% ifequal catActual 0 %} class="active" {% endifequal %}><a href="/catalogo/{{ supermercado.id }}/0/">Todas</a>
+            <li {% ifequal catActual 0 %} class="active" {% endifequal %}><a href="{% url 'catalogos_view' supermercado.id 0 %}">Todas</a>
             </li>
         {% endif %}
         <li {% ifequal catActual cat.id %} class="active"{% endifequal %}><a
-                href="/catalogo/{{ supermercado.id }}/{{ cat.id }}/">{{ cat.nombre }}</a></li>
+                href="{% url 'catalogos_view' supermercado.id cat.id %}">{{ cat.nombre }}</a></li>
     {% endfor %}
 {% endblock %}
 {% block cuerpo %}
@@ -47,7 +47,7 @@
                         </h3>
 
                         <p>
-                            <a href="add_cart/{{ catalogo.id }}/{{ catalogo.precio }}/" class="btn btn-primary" role="button" style="width: 100%">Añadir al carrito</a>
+                            <a href="{% url 'agregar_carrito' catalogo.id catalogo.precio %}" class="btn btn-primary" role="button" style="width: 100%">Añadir al carrito</a>
                             {#                            <a href="#" class="btn btn-default" role="button">Detalles</a>#}
                         </p>
                     </div>

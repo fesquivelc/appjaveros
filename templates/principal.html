@@ -13,10 +13,10 @@
             {% block navbar %}
 
             {% endblock %}
-            <li><a href="view_cart/">Carrito de compras <span class="glyphicon glyphicon-shopping-cart"></span></a></li>
-            <li><a href="/pedidos">Ver pedidos <span class="glyphicon glyphicon-plane"></span></a></li>
-            <li><a href="/contacto/">Contáctenos <span class="glyphicon glyphicon-phone-alt"></span></a></li>
-            <li><a href="/cerrar/">Cerrar sesión <span class="glyphicon glyphicon-log-out"></span></a></li>
+            <li><a href="{% url 'ver_carrito' %}">Carrito de compras <span class="glyphicon glyphicon-shopping-cart"></span></a></li>
+            <li><a href="{% url 'ver_pedidos' %}">Ver pedidos <span class="glyphicon glyphicon-plane"></span></a></li>
+            <li><a href="{% url 'contacto' %}">Contáctenos <span class="glyphicon glyphicon-phone-alt"></span></a></li>
+            <li><a href="{% url 'cerrar_sesion' %}">Cerrar sesión <span class="glyphicon glyphicon-log-out"></span></a></li>
 
         </ul>
 

@@ -15,7 +15,9 @@
     <form action="." method="POST" name="formulario">
         <p><label for="id_direccion">Dirección:</label></p>
         <p><select name="direccion" id="id_direccion">
-            <option value="1">1</option>
+            {% for direccion in direcciones %}
+                <option value="{{ direccion.id }}" {% if forloop.first %} selected {% endif %}>{{ direccion.__unicode__ }}</option>
+            {% endfor %}
         </select></p>
         {% csrf_token %}
         <table class="table table-hover" style="text-align: center">

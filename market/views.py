@@ -114,9 +114,10 @@ def get_cart(request):
 
         return HttpResponseRedirect(ruta)
 
-
     else:
-        return render_to_response('carrito.html', dict(cart=Cart(request)), context_instance=RequestContext(request))
+        direcciones = Direccion.objects.filter(usuario__in = request.user)
+        ctx = {'cart':dict(cart=Cart(request)), 'direcciones':direcciones}
+        return render_to_response('carrito.html', ctx, context_instance=RequestContext(request))
 
 
 def login(request):

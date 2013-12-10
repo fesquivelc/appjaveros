@@ -107,7 +107,7 @@ class Direccion(models.Model):
 
     class Meta:
         verbose_name_plural = 'Direcciones'
-        ordering = ('nombre',)
+        ordering = ('calle',)
 
 class Repartidor(models.Model):
     dni = models.CharField(max_length = 8,primary_key=True)

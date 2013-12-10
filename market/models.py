@@ -140,7 +140,7 @@ class Pedido(models.Model):
     precio_total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __unicode__(self):
-        return 'repartidor: %s - fecha de pedido: %s - hora de pedido: %s' % (self.repartidor.nombre,self.fecha_pedido,self.hora_pedido)
+        return 'usuario: %s - fecha de pedido: %s - hora de pedido: %s' % (self.usuario.get_username(),self.fecha_pedido,self.hora_pedido)
 
     class Meta:
         ordering = ('fecha_pedido',)

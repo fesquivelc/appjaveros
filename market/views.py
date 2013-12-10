@@ -78,6 +78,7 @@ def get_cart(request):
         pedido = Pedido()
 
         tamano = int(request.POST['tamano'])
+        print 'tamaño'+str(tamano)
         id_direccion = int(request.POST['direccion'])
         precio_total = float(request.POST['precio_total'])
 
@@ -89,7 +90,8 @@ def get_cart(request):
         #GUARDAMOS EL PEDIDO
         pedido.save()
 
-        for i in range(1, tamano):
+        for i in range(1, tamano+1):
+
             #INSTANCIAMOS UN DETALLEPEDIDO
             detallePedido = DetallePedido()
 
@@ -101,6 +103,7 @@ def get_cart(request):
 
             #OBTENEMOS UN OBJETO CATALOGO
             catalogo = Catalogo.objects.get(id=id_catalogo)
+            print catalogo
 
             #UTILIZAMOS ESTA INFORMACION PARA EL DETALLEPEDIDO
             detallePedido.pedido = pedido
@@ -110,13 +113,18 @@ def get_cart(request):
             #GUARDAMOS EL DETALLE
             detallePedido.save()
 
+            print 'iteracion: %s' % i
+
         ruta = '/pedidos/detalle/%s/' % pedido.id
 
+        cart = Cart(request)
+        for i in cart:
+            cart.remove(i.product)
         return HttpResponseRedirect(ruta)
 
     else:
-        direcciones = Direccion.objects.filter(usuario__in = request.user)
-        ctx = {'cart':dict(cart=Cart(request)), 'direcciones':direcciones}
+        direcciones = Direccion.objects.all()
+        ctx = {'cart': Cart(request), 'direcciones':direcciones}
         return render_to_response('carrito.html', ctx, context_instance=RequestContext(request))
 
 

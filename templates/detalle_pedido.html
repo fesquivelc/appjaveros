@@ -3,7 +3,7 @@
     DETALLE DE PEDIDO
 {% endblock %}
 {% block panel %}
-    Completo detalle de su pedido realizado el {{ pedido.fecha_pedido | date: 'd M Y' }}
+    Completo detalle de su pedido realizado el {{ pedido.fecha_pedido }}
 {% endblock %}
 {% block navbar %}
     <li><a href="{% url 'supermercados' %}">Comprar <span class="glyphicon glyphicon-hand-up"></span></a></li>
@@ -13,11 +13,11 @@
                             panel-danger
                         {% else %}
                             {% ifequal pedido.estado 'E' %}
-                                panel-info
-                            {% else %}
                                 panel-success
+                            {% else %}
+                                panel-info
                             {% endifequal %}
-                        {% endifequal %}" style="max-width: 600px;">
+                        {% endifequal %}" style="max-width: 600px;margin: 0 auto;">
         <div class="panel-heading">
             <p>Estado:
                 <strong>
@@ -25,9 +25,9 @@
                         Aún no sale
                     {% else %}
                         {% ifequal pedido.estado 'E' %}
-                            En camino
-                        {% else %}
                             Entregado
+                        {% else %}
+                            Atendiendo
                         {% endifequal %}
                     {% endifequal %}
                 </strong>
@@ -35,8 +35,8 @@
         </div>
         <div class="panel-body">
             <p><strong>Repartidor: {{ pedido.repartidor }}</strong></p>
-            <p><strong>Precio total: {{ pedido.precio_total }}</strong></p>
-            <p>Recargo: {{ pedido.direccion.urbanizacion.zona.recargo }}</p>
+            <p><strong>Precio total: S/. {{ pedido.precio_total }}</strong></p>
+            <p>Recargo: S/. {{ pedido.direccion.calle.urbanizacion.zona.recargo }}</p>
 
             <table class="table table-condensed">
                 <theader>
@@ -50,7 +50,7 @@
                     {% for detalle in detalles  %}
                         <tr>
                             <td>{{ detalle.catalogo.producto.nombre }}</td>
-                            <td>{{ detalle.catalogo.precio }}</td>
+                            <td>S/. {{ detalle.catalogo.precio }} x {{ detalle.catalogo.producto.unidad }}</td>
                             <td>{{ detalle.cantidad }}</td>
                         </tr>
                     {% endfor %}

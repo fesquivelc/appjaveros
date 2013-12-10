@@ -16,7 +16,7 @@
         <p><label for="id_direccion">Dirección:</label></p>
         <p><select name="direccion" id="id_direccion">
             {% for direccion in direcciones %}
-                <option value="{{ direccion.id }}" {% if forloop.first %} selected {% endif %}>{{ direccion.__unicode__ }}</option>
+                <option value="{{ direccion.id }}" {% if forloop.first %} selected {% endif %}>{{ direccion }}</option>
             {% endfor %}
         </select></p>
         {% csrf_token %}
@@ -93,7 +93,7 @@
 
                 suma+= precio * cantidad;
             }
-            document.getElementById("id_total").value = suma;
+            document.getElementById("id_precio_total").value = suma;
         }
     </script>
 {% endblock %}

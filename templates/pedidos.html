@@ -20,15 +20,17 @@
             <th>Estado</th>
             <th>Dirección</th>
             <th>Precio Total</th>
+            <th>Detalle</th>
         </thead>
         <tbody>
         {% for pedido in pedidos %}
-            <tr>
-                <td>{{ pedido.fecha_pedido | date:'d M Y' }}</td>
+            <tr class="{% ifequal pedido.estado 'S' %}danger{% else %} {% ifequal pedido.estado 'E' %}success{% else %}warning{% endifequal %}{% endifequal %}">
+                <td>{{ pedido.fecha_pedido }}</td>
                 <td>{{ pedido.hora_pedido }}</td>
-                <td>{{ pedido.estado }}</td>
-                <td>{{ pedido.direccion.__unicode__ }}</td>
+                <td>{% ifequal pedido.estado 'S' %}Aún no sale{% else %} {% ifequal pedido.estado 'E' %}Entregado{% else %}En camino{% endifequal %}{% endifequal %}</td>
+                <td>{{ pedido.direccion }}</td>
                 <td>{{ pedido.precio_total }}</td>
+                <td><a href="{% url 'ver_detalle_pedido' pedido.id %}" type="button" class="btn btn-default">Ver Detalle</a></td>
             </tr>
         {% endfor %}
         </tbody>

@@ -13,7 +13,6 @@ def add_to_cart(request, catalogo_id, cantidad):
     catalogo = Catalogo.objects.get(id=catalogo_id)
     cart = Cart(request)
     cart.add(catalogo, catalogo.precio, 1)
-    print len(dict(cart=Cart(request)))
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
@@ -75,15 +74,49 @@ def contacto_view(request):
 
 
 def get_cart(request):
-    lista = []
-    shop = dict(cart=Cart(request))
+    if request.method == 'POST':
+        pedido = Pedido()
 
-    print shop.get('cart')
+        tamano = int(request.POST['tamano'])
+        id_direccion = int(request.POST['direccion'])
+        precio_total = float(request.POST['precio_total'])
 
-    for i in shop.get('cart'):
-        print i.product
+        #LLENAMOS LOS DATOS BASICOS PARA EL PEDIDO
+        pedido.direccion = Direccion.objects.get(id = id_direccion)
+        pedido.usuario = request.user
+        pedido.precio_total = precio_total
 
-    return render_to_response('carrito.html', dict(cart=Cart(request)), context_instance=RequestContext(request))
+        #GUARDAMOS EL PEDIDO
+        pedido.save()
+
+        for i in range(1, tamano):
+            #INSTANCIAMOS UN DETALLEPEDIDO
+            detallePedido = DetallePedido()
+
+            #RECUPERAMOS EL VALOR DEL ID DEL CATALOGO
+            id_catalogo = int(request.POST['catalogo-%s' % i])
+
+            #RECUPERAMOS LA CANTIDAD DE PRODUCTO PEDIDO
+            cantidad = int(request.POST['cantidad-%s' % i])
+
+            #OBTENEMOS UN OBJETO CATALOGO
+            catalogo = Catalogo.objects.get(id=id_catalogo)
+
+            #UTILIZAMOS ESTA INFORMACION PARA EL DETALLEPEDIDO
+            detallePedido.pedido = pedido
+            detallePedido.catalogo = catalogo
+            detallePedido.cantidad = cantidad
+
+            #GUARDAMOS EL DETALLE
+            detallePedido.save()
+
+        ruta = '/pedidos/detalle/%s/' % pedido.id
+
+        return HttpResponseRedirect(ruta)
+
+
+    else:
+        return render_to_response('carrito.html', dict(cart=Cart(request)), context_instance=RequestContext(request))
 
 
 def login(request):
@@ -101,9 +134,6 @@ def login(request):
                 if user is not None:
                     if user.is_active:
                         auth_login(request, user)
-
-                        #variable de sesion que contiene el carrito
-                        request.session['carrito_compra'] = []
                         return HttpResponseRedirect(rutaCorrecto)
                     else:
                         mensaje = "Cuenta inactiva"
@@ -118,6 +148,7 @@ def remove_from_cart(request, catalogo_id):
     catalogo = Catalogo.objects.get(id=catalogo_id)
     cart = Cart(request)
     cart.remove(catalogo)
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def supermercados_view(request):
@@ -126,8 +157,22 @@ def supermercados_view(request):
 
 
 def pedidos_view(request):
-    return render_to_response('pedidos.html')
+    #OBTENEMOS LOS PEDIDOS DEL USUARIO
+    pedidos = request.user.pedido_set.all()
+
+    #VALORES DE CONTEXTO
+    ctx = {'pedidos':pedidos}
+    return render_to_response('pedidos.html',ctx,context_instance=RequestContext(request))
 
 
-def detaalle_pedidos_view(request, p1):
-    return render_to_response('detalle_pedido.html')
+def detalle_pedido_view(request, id_pedido):
+    #OBTENEMOS EL PEDIDO
+    pedido = Pedido.objects.get(id = int(id_pedido))
+    #OBTENEMOS TODOS LOS DETALLES DE DICHO PEDIDO
+    detalles = pedido.detallepedido_set.all()
+
+    #VALORES DE CONTEXTO
+    ctx = {'pedido':pedido,'detalles':detalles}
+
+    #LLENAMOS CON ESTOS VALORES EL TEMPLATE 'detalle_pedido.html'
+    return render_to_response('detalle_pedido.html',ctx,context_instance=RequestContext(request))

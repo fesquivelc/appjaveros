@@ -3,53 +3,95 @@
     Carrito de compras
 {% endblock %}
 {% block subcabecera %}
-    Reaalice su pedido
+    Realice su pedido
 {% endblock %}
 {% block panel %}
     Listado de productos
 {% endblock %}
-
+{% block navbar %}
+    <li><a href="{% url 'supermercados' %}">Comprar <span class="glyphicon glyphicon-hand-up"></span></a></li>
+{% endblock %}
 {% block cuerpo %}
-    <form action="" method="POST">
-    {% csrf_token %}
-    <table class="table table-hover" style="text-align: center">
-        <tr>
-            <th>Producto</th>
-            <th>Supermercado</th>
-            <th>Cantidad</th>
-            <th>Precio</th>
-            <th>Eliminar</th>
-        </tr>
-        {% for producto in cart %}
+    <form action="." method="POST" name="formulario">
+        <p><label for="id_direccion">Dirección:</label></p>
+        <p><select name="direccion" id="id_direccion">
+            <option value="1">1</option>
+        </select></p>
+        {% csrf_token %}
+        <table class="table table-hover" style="text-align: center">
+            <thead>
             <tr>
-                <td><img src="/{{ producto.product.imagen }}" alt="..." class="img-rounded" style="height: 64px"> <h4>{{ producto.product.producto.nombre }}</h4></td>
-                <td>{{ producto.product.supermercado.nombre }}</td>
-                <td><input id="cant-{{ producto.product.id }}" type="text" name="cantidad" /></td>
-                <td><label id="precio" name="precio" for="cant-{{ producto.product.id }}">{{ producto.product.precio }}</label></td>
-                <td><a href="{{ forloop.counter }}"><span class="glyphicon glyphicon-trash"></span></a></td>
+                <th>Producto</th>
+                <th>Supermercado</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Eliminar</th>
             </tr>
-        {% endfor %}
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><label for=""></label></td>
-        </tr>
-    </table>
+            </thead>
+            <tbody>
+            {% for producto in cart %}
+                <tr>
+                    {# NOMBRE DEL PRODUCTO Y SU IMAGEN #}
+                    <td><img src="/{{ producto.product.imagen }}" alt="..." class="img-rounded" style="height: 64px">
+                        <h4>{{ producto.product.producto.nombre }}</h4></td>
+
+                    {# NOMBRE DEL SUPERMERCADO #}
+                    <td>{{ producto.product.supermercado.nombre }}</td>
+
+                    {# CANTIDAD QUE SE VA A COMPRAR #}
+                    <td><input id="id_cantidad-{{ forloop.counter }}" type="number" name="cantidad-{{ forloop.counter }}"
+                               required="required" oninput="javascript:obtenerTotal();" value="1"/>
+                    </td>
+
+                    {# PRECIO DEL PRODUCTO #}
+                    <td><input id="id_precio-{{ forloop.counter }}" name="precio-{{ forloop.counter }}"
+                               value="{{ producto.product.precio }}" readonly/></td>
+
+                    {# ELIMINAR DEL CARRITO #}
+                    <td><a href="{% url 'eliminar_carrito' producto.product.id %}"><span
+                            class="glyphicon glyphicon-trash"></span></a></td>
+
+                    {# GUIA PARA RECUPERAR DATOS DEL PRODUCTO #}
+                    <input type="hidden" name="catalogo-{{ forloop.counter }}" value="{{ producto.product.id }}"/>
+
+                    {# GUIA PARA RECUPERAR EL TAMAÑO DE LOS DATOS #}
+                    {% if forloop.last %}
+                        <input type="hidden" id="id_tamano" name="tamano" value="{{ forloop.counter }}"/>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+            <tfoot>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td><button type="submit" class="btn btn-primary">Confirmar</button></td>
+                <td>&nbsp;</td>
+
+                {# PRECIO TOTAL DE LA COMPRA #}
+                <td><label for="id_precio_total">Total:</label><input id="id_precio_total" name="precio_total" type="text" readonly/></td>
+            </tr>
+            </tfoot>
+
+        </table>
 
     </form>
 {% endblock %}
 {% block aqui_js %}
-{% comment %}<script type="application/javascript">
-    $(document).on("ready",iniciar);
-    function iniciar(){
-        $("form a").on("click",eliminar);
-    }
-    function eliminar(){
-        var href = $(this).attr("href");
+    <script type="application/javascript">
+        $(document).on("ready",obtenerTotal());
+        function obtenerTotal() {
+            var tamano = parseInt(document.getElementById("id_tamano").value);
+            var suma = 0;
+            for (var i = 1; i <= tamano; i++) {
+                var idprecio = "id_precio-"+i;
+                var idcantidad = "id_cantidad-"+i;
+                var precio = parseFloat(document.getElementById(idprecio).value);
+                var cantidad = parseInt(document.getElementById(idcantidad).value);
 
-
-    }
-</script>{% endcomment %}
+                suma+= precio * cantidad;
+            }
+            document.getElementById("id_total").value = suma;
+        }
+    </script>
 {% endblock %}

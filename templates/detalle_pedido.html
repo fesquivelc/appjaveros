@@ -1,0 +1,61 @@
+{% extends 'principal.html' %}
+{% block cabecera %}
+    DETALLE DE PEDIDO
+{% endblock %}
+{% block panel %}
+    Completo detalle de su pedido realizado el {{ pedido.fecha_pedido | date: 'd M Y' }}
+{% endblock %}
+{% block navbar %}
+    <li><a href="{% url 'supermercados' %}">Comprar <span class="glyphicon glyphicon-hand-up"></span></a></li>
+{% endblock %}
+{% block cuerpo %}
+    <div class="panel   {% ifequal pedido.estado 'S' %}
+                            panel-danger
+                        {% else %}
+                            {% ifequal pedido.estado 'E' %}
+                                panel-info
+                            {% else %}
+                                panel-success
+                            {% endifequal %}
+                        {% endifequal %}" style="max-width: 600px;">
+        <div class="panel-heading">
+            <p>Estado:
+                <strong>
+                    {% ifequal pedido.estado 'S' %}
+                        Aún no sale
+                    {% else %}
+                        {% ifequal pedido.estado 'E' %}
+                            En camino
+                        {% else %}
+                            Entregado
+                        {% endifequal %}
+                    {% endifequal %}
+                </strong>
+            </p>
+        </div>
+        <div class="panel-body">
+            <p><strong>Repartidor: {{ pedido.repartidor }}</strong></p>
+            <p><strong>Precio total: {{ pedido.precio_total }}</strong></p>
+            <p>Recargo: {{ pedido.direccion.urbanizacion.zona.recargo }}</p>
+
+            <table class="table table-condensed">
+                <theader>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </theader>
+                <tbody>
+                    {% for detalle in detalles  %}
+                        <tr>
+                            <td>{{ detalle.catalogo.producto.nombre }}</td>
+                            <td>{{ detalle.catalogo.precio }}</td>
+                            <td>{{ detalle.cantidad }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

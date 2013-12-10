@@ -90,16 +90,20 @@ class Urbanizacion(models.Model):
         verbose_name_plural = 'Urbanizaciones'
         ordering = ('zona','nombre',)
 
+class Calle(models.Model):
+    urbanizacion = models.ForeignKey(Urbanizacion)
+    tipo = models.CharField(max_length = 2, choices=(('Av','Avenida'),('Jr','Jiron')))
+    nombre = models.CharField(max_length=150)
 
+    def __unicode__(self):
+        return '%s %s Urb. %s' % (self.tipo,self.nombre,self.urbanizacion.nombre)
 class Direccion(models.Model):
-    tipo = models.CharField(max_length = 2)
-    nombre = models.CharField(max_length = 250)
     numero = models.IntegerField()
     telefono = models.CharField(max_length=10)
-    urbanizacion = models.ForeignKey(Urbanizacion)
+    calle = models.ForeignKey(Calle)
     usuario = models.ManyToManyField(settings.AUTH_USER_MODEL)
     def __unicode__(self):
-        return self.numero
+        return '%s %s %s Urb. %s' % (self.calle.tipo,self.calle.nombre,self.numero,self.calle.urbanizacion.nombre)
 
     class Meta:
         verbose_name_plural = 'Direcciones'
@@ -123,20 +127,24 @@ class Pedido(models.Model):
     fecha_pedido = models.DateField(default=datetime.datetime.now())
     hora_entrega = models.TimeField(null=True)
     fecha_entrega = models.DateField(null=True)
-    estado = models.CharField(max_length = 1,choices=(
-                                                        ('S','Sin salir'),
-                                                        ('A','Atendiendo'),
-                                                        ('E','Entregado'),
+    estado = models.CharField(max_length = 1, default='S', choices=(
+                                                        ('S', 'Sin salir'),
+                                                        ('A', 'Atendiendo'),
+                                                        ('E', 'Entregado'),
                                                     ))
     direccion = models.ForeignKey(Direccion)
     comentario_cliente = models.TextField(null=True)
-    confirmacion_cliente = models.BooleanField(null=True,default=False)
-    repartidor = models.ForeignKey(Repartidor)
-    zona = models.ForeignKey(Zona)
+    confirmacion_cliente = models.BooleanField(default=False)
+    repartidor = models.ForeignKey(Repartidor, null=True)
     usuario = models.ForeignKey(User)
+    precio_total = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __unicode__(self):
         return 'repartidor: %s - fecha de pedido: %s - hora de pedido: %s' % (self.repartidor.nombre,self.fecha_pedido,self.hora_pedido)
+
+    class Meta:
+        ordering = ('fecha_pedido',)
+
 
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido)

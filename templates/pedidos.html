@@ -1,0 +1,36 @@
+{% extends 'principal.html' %}
+{% block cabecera %}
+    PEDIDOS DEL USUARIO
+{% endblock %}
+{% block subcabecera %}
+
+{% endblock %}
+{% block panel %}
+    Listado de pedidos hechos por el usuario
+{% endblock %}
+{% block navbar %}
+    <li><a href="{% url 'supermercados' %}">Comprar <span class="glyphicon glyphicon-hand-up"></span></a></li>
+{% endblock %}
+
+{% block cuerpo %}
+    <table class="table table-condensed">
+        <thead>
+            <th>Fecha de pedido</th>
+            <th>Hora de pedido</th>
+            <th>Estado</th>
+            <th>Dirección</th>
+            <th>Precio Total</th>
+        </thead>
+        <tbody>
+        {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.fecha_pedido | date:'d M Y' }}</td>
+                <td>{{ pedido.hora_pedido }}</td>
+                <td>{{ pedido.estado }}</td>
+                <td>{{ pedido.direccion.__unicode__ }}</td>
+                <td>{{ pedido.precio_total }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
